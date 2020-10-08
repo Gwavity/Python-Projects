@@ -1,0 +1,9 @@
+Text
+writer
+that 
+pastes
+every
+line
+in
+this
+file
