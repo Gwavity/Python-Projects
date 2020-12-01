@@ -35,5 +35,4 @@ while True:
     song = input("Enter a song or artist. ").lower()
     find_file(song)
     choice = input("What song would you like? ")
-    print("\n")
     pick_song_from_part_of_name(Downloads,choice)
