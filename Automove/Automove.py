@@ -2,8 +2,8 @@ import os
 import shutil
 import time
 
-DownloadsDir = 'C:/Users/Alex/Downloads/'
-ImageFolder = 'C:/Users/Alex/Desktop/edits and images/test'
+DownloadsDir = ''
+ImageFolder = ''
 
 while True:
     time.sleep(.3)
