@@ -10,5 +10,5 @@ while True:
     Downloadslst = os.listdir(DownloadsDir) 
     for files in Downloadslst:
         if files.endswith(('.png','.jpg')):
-            shutil.move(DownloadsDir + '/' files, ImageFolder)
+            shutil.move(DownloadsDir + '/' + files, ImageFolder)
             print('File moved succefully.')
