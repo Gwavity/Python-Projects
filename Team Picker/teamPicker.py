@@ -1,6 +1,6 @@
 import random
 
-names = input('Enter the names of people playing split up by commas: ')
+names = input('Enter the names of people playing(split up by commas): ')
 teamDic = {'T1':'','T2':''}
 namesList = names.split(',')
 
