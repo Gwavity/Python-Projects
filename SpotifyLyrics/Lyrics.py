@@ -15,5 +15,6 @@ if(spotifyResponse.status_code == 200 or 201):
 lyricsResponse = requests.get(f'{lyricsURL}/{songArtist}/{songName}')
 lyricsJSON = lyricsResponse.json()
 with open('currentSongLyrics.txt','w') as writeLyrics:
+    writeLyrics.write(f'Current song is {songName} by {songArtist} \n')
     writeLyrics.write(lyricsJSON['lyrics'])
     print('Lyrics were written to currentSongLyrics.txt!')
