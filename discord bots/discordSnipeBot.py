@@ -27,4 +27,4 @@ async def snipe(ctx):
     else:
         await ctx.send("Sorry, there hasn't been a message deleted in this discord.")
 
-bot.run("")#Place your bot token here.
+bot.run("BOT TOKEN")#Place your bot token here.
