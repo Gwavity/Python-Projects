@@ -15,4 +15,4 @@ async def unbanAll(guild):
     for i in getbans:
         await getGuild.unban(i.user)
 
-client.run("")
+client.run("BOT TOKEN")
