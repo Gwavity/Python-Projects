@@ -40,11 +40,9 @@ def main():
     channelIDs = input("Enter channelID(seperate with commas for multiple channels): ")
     if "," in channelIDs:
         channelIDs = channelIDs.split(',')
-
     guild_id = int(input("Ener GuildID: "))
     
     messageClass = SendMessage(token, channelIDs, guild_id)
-
     messageClass.run()
 
 if __name__ == '__main__':
