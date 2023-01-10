@@ -13,6 +13,7 @@ async def getidea(ctx):
     ideaScraper = scraper.Scrape()
     ideaTitle, ideaHeader = ideaScraper.RetreiveCodeIdea()
     embed = discord.Embed(title=ideaTitle,description=ideaHeader,url=ideaScraper.url,color=discord.Color.from_rgb(244,224,77))
+                           #Set these to wherever the images are saved to
     bulbFile = discord.File("whattocode.png",filename="Lightbulb.png")
     textFile = discord.File("whattocodetext.png",filename="Text.png")
     embed.set_thumbnail(url="attachment://Text.png")
