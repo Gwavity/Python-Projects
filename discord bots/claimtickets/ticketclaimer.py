@@ -17,7 +17,7 @@ class autoClaim:
         self.newChannel = None
         self.channels = []
         payload = {
-            "type":3,
+            "type": 3,
             "guild_id": self.guild,
             "channel_id": message["channel_id"],
             "application_id": message["author"]["id"],
