@@ -17,8 +17,8 @@ class autoClaim:
         self.newChannel = None
         self.channels = []
         payload = {
-            "type": 3,
-            "guild_id": self.guild,
+            "type":3,
+            "guild_id":self.guild,
             "channel_id": message["channel_id"],
             "application_id": message["author"]["id"],
             "message_id": message["id"],
@@ -27,48 +27,53 @@ class autoClaim:
         }
         time.sleep(self.delay)
         requests.post("https://discord.com/api/v10/interactions",json=payload,headers=self.headers)
+        self.retrieveChannels()
 
     def getMessages(self):
         print("Getting Messages")
-        
         while True:
-            messages = requests.get(f"https://discordapp.com/api/v6/channels/{self.newChannel}/messages",headers=self.headers).json()
-            if messages[0]["author"]["username"] == self.bot and len(messages[0]["components"]) >= 1:
-                self.postClaim(messages[0])
+            messagesResponse = requests.get(f"https://discordapp.com/api/v6/channels/{self.newChannel}/messages",headers=self.headers)
+            messageJSON = messagesResponse.json()
+
+            if messageJSON[0]["author"]["username"] == self.bot and len(messageJSON[0]["components"]) >= 1:
+                self.postClaim(messageJSON[0])
                 return
-            
-            print("Waiting 3 Seconds.")
-            time.sleep(3)
+            time.sleep(1)
 
     def retrieveChannels(self):
         while not self.newChannel:
-            tempList = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers).json()
-            
             if len(self.channels) == 0:
-                currentRequest = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers).json()
+                currentRequest = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers)
+                currentRequestJSON = currentRequest.json()
+                
                 print("Setting channels")
                 try:
-                    for i in currentRequest:
+                    for i in currentRequestJSON:
                         self.channels.append(i["id"])
                 except:
-                    print("You are being rate limited!(Waiting 5 seconds)")
-                    time.sleep(5)
+                    print("You are being rate limited!(Waiting 10 seconds)")
+                    time.sleep(10)
             else:
+                tempListResponse = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers)
+                tempListResponseJSON = tempListResponse.json()
+
+                if tempListResponse.status_code == 429:
+                    print("You are being rate limited!(Waiting 10 seconds)")
+                    time.sleep(10)
                 for i in range(100):
                     try:
-                        tempName = tempList[i]["name"]
-                        temp = tempList[i]["id"]
-                        
+                        tempName = tempListResponseJSON[i]["name"]
+                        temp = tempListResponseJSON[i]["id"]
                         if temp not in self.channels:
                             print(f"\n{temp}")
                             print(f"{tempName}\n")
                             self.newChannel = temp
                             self.getMessages()
-                            break
+                            return
                     except:
                         break
-            print("Waiting 3 Seconds.")
-            time.sleep(3)
+                print("Waiting 5 Seconds.")
+                time.sleep(5)
 
 if __name__ == "__main__":
     token,botName,guild,delay = retrieveJSON.getjson()
