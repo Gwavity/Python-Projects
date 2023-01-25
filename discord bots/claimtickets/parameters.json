@@ -1,0 +1,6 @@
+{
+    "token": "",
+    "botname": "",
+    "guild": INT,
+    "delay": INT
+}
