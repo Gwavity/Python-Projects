@@ -18,7 +18,7 @@ class autoClaim:
         self.channels = []
         payload = {
             "type":3,
-            "guild_id":self.guild,
+            "guild_id": self.guild,
             "channel_id": message["channel_id"],
             "application_id": message["author"]["id"],
             "message_id": message["id"],
@@ -30,17 +30,20 @@ class autoClaim:
 
     def getMessages(self):
         print("Getting Messages")
+        
         while True:
             messages = requests.get(f"https://discordapp.com/api/v6/channels/{self.newChannel}/messages",headers=self.headers).json()
             if messages[0]["author"]["username"] == self.bot and len(messages[0]["components"]) >= 1:
                 self.postClaim(messages[0])
                 return
+            
             print("Waiting 3 Seconds.")
             time.sleep(3)
 
     def retrieveChannels(self):
         while not self.newChannel:
             tempList = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers).json()
+            
             if len(self.channels) == 0:
                 currentRequest = requests.get(f"https://discordapp.com/api/v6/guilds/{self.guild}/channels",headers=self.headers).json()
                 print("Setting channels")
@@ -55,6 +58,7 @@ class autoClaim:
                     try:
                         tempName = tempList[i]["name"]
                         temp = tempList[i]["id"]
+                        
                         if temp not in self.channels:
                             print(f"\n{temp}")
                             print(f"{tempName}\n")
