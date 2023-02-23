@@ -10,7 +10,7 @@ async def channel_autocomplete(interaction: discord.Interaction, channel_id):
 
     return [discord.app_commands.Choice(name=channel,value=str(channelID)) for channel,channelID in completions.items()]
 
-@bot.tree.command()
+@bot.tree.command(description="Tags any given voice channel.")
 @discord.app_commands.autocomplete(channel_id=channel_autocomplete)
 async def tagchannel(interaction: discord.Interaction, channel_id: str):
     choices = await channel_autocomplete(interaction,channel_id)
