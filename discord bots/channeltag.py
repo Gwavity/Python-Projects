@@ -20,7 +20,7 @@ async def tagchannel(interaction: discord.Interaction, channel_id: str):
         await interaction.response.send_message(embed=errorEmbed)
         return
 
-    await interaction.response.send_message(f"<#{channel_id}>" )
+    await interaction.response.send_message(f"<#{channel_id}>\n`<#{channel_id}>`")
 
 @bot.event
 async def on_ready():
