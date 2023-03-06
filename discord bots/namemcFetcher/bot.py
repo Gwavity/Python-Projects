@@ -16,6 +16,7 @@ async def on_ready():
 async def mc(ctx,username):
     startTime = time.time()
     user = getMC().getHTML(username)
+    
     if type(user) == tuple:
         description = "\n".join(user[0])
         embed = discord.Embed(title=user[1],url=user[2],color=discord.Color.random())
