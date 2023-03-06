@@ -1,6 +1,6 @@
+from getUser import getMC
 from discord.ext import commands
 import discord
-from getUser import getMC
 import time
 
 #Works with the slower getUser
