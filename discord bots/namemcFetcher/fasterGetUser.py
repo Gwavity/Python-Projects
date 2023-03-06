@@ -11,7 +11,7 @@ class getMC:
         return f"https://mc-heads.net/player/{self.username}/128.png"
     
     def retrieveUser(self):
-        return requests.get(f"https://api.mojang.com/users/profiles/minecraft/{self.username}")
+        return requests.get(self.url)
     
     def run(self):
         user = self.retrieveUser()
