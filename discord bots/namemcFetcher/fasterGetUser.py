@@ -5,9 +5,7 @@ import requests
 class getMC:
     def __init__(self,username):
         self.url = f"https://api.mojang.com/users/profiles/minecraft/{username}"
-        self.uuid = None
         self.username = username
-        self.imageLink = None
     
     def retrieveIMG(self):
         return f"https://mc-heads.net/player/{self.username}/128.png"
