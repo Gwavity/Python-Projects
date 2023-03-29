@@ -102,8 +102,6 @@ async def fmScrobble(ctx,*args):
         if response.status_code == 200:
             sessionKey = response.json()["session"]["key"]
             activeScrobblers[ctx.author.id] = [sessionKey,False]
-    else:
-        pass
     
     activeScrobblers[ctx.author.id][1] = True
     while activeScrobblers[ctx.author.id][1]:
