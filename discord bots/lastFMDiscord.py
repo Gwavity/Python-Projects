@@ -12,7 +12,7 @@ SECRETKEY = ""#Pass your LastFM SECRET Key in here.
 
 bot = commands.Bot(command_prefix="$", intents=discord.Intents.all(), case_insensitive=True)
 activeScrobblers = {}
-#"userID":["sessionKey"]
+#"userID":["sessionKey",False/True]
 
 tokenURL = f"http://ws.audioscrobbler.com/2.0/?method=auth.gettoken&api_key={APIKEY}&format=json"
 
