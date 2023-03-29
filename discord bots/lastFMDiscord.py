@@ -110,8 +110,8 @@ async def fmScrobble(ctx,*args):
     
     activeScrobblers[ctx.author.id][1] = True
     while ctx.author.id in activeScrobblers:
-        if increment >= 200:
-            break
+#         if increment >= 200:
+#             break
 
         params = createScrobbleSig(args[1],args[0],activeScrobblers[ctx.author.id][0])
         response = requests.post("http://ws.audioscrobbler.com/2.0/",params).text
