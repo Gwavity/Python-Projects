@@ -97,14 +97,13 @@ async def fmScrobble(ctx,*args):
         if time.time() - currentTime >= 10:#Exits the function if the user doesn't create their token in time.
             await ctx.reply("Revoking session.")
             return
-        try:
-            params = sessionSig(token)
-            response = requests.get("http://ws.audioscrobbler.com/2.0/",params)
-            if response.status_code == 200:
-                sessionKey = response.json()["session"]["key"]
-                activeScrobblers[ctx.author.id] = [sessionKey,False]
-        except:
-            pass
+        params = sessionSig(token)
+        response = requests.get("http://ws.audioscrobbler.com/2.0/",params)
+        if response.status_code == 200:
+            sessionKey = response.json()["session"]["key"]
+            activeScrobblers[ctx.author.id] = [sessionKey,False]
+    else:
+        pass
     
     activeScrobblers[ctx.author.id][1] = True
     while activeScrobblers[ctx.author.id][1]:
