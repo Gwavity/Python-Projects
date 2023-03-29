@@ -88,7 +88,7 @@ async def fmScrobble(ctx,*args):
         await ctx.reply(embed=createEmbed("connect",token))
     else:
         if not activeScrobblers[ctx.author.id]: 
-            await ctx.reply(embed=createEmbed("currentlyScrobbling"))#"You are already scrobbling.")
+            await ctx.reply(embed=createEmbed("currentlyScrobbling"))
             return
     currentTime = time.time()
 
