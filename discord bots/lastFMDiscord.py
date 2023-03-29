@@ -62,6 +62,8 @@ def createEmbed(instance,token=None,artist = None,track = None):
         embed = discord.Embed(title="Connect your last.fm account to the bot.",description=f"http://www.last.fm/api/auth/?api_key={APIKEY}&token={token}",color=discord.Color.from_rgb(255,0,0))
     if instance == "currentlyScrobbling":
         embed = discord.Embed(title="You are already scrobbling.",description="No need to run this command again.",color=discord.Color.from_rgb(255,0,0))
+    if instance == "success":
+        embed = discord.Embed(title=f"You are scrobbling: {artist} {track.capitalize()}.\n Type $fmstop to end your scrobbling.",color=discord.Color.green())
     if instance == "rateLimit":
         embed = discord.Embed(title="You are currently being rate-limited.",description="Please wait a little while before using this bot again.",color=discord.Color.from_rgb(255,0,0))
     if instance == "finishedScroblbing":
