@@ -63,7 +63,7 @@ def createEmbed(instance,token=None,artist = None,track = None):
     if instance == "currentlyScrobbling":
         embed = discord.Embed(title="You are already scrobbling.",description="No need to run this command again.",color=discord.Color.from_rgb(255,0,0))
     if instance == "rateLimit":
-        embed = discord.Embed(title="We are currently being rate-limited.",description="Please wait a little while before using this bot again.",color=discord.Color.from_rgb(255,0,0))
+        embed = discord.Embed(title="You are currently being rate-limited.",description="Please wait a little while before using this bot again.",color=discord.Color.from_rgb(255,0,0))
     if instance == "finishedScroblbing":
         embed = discord.Embed(title="You are finished scrobbling.",description=f"Scrobbled track: {artist}-{track}",color=discord.Color.green())
     if instance == "stoppingError":
