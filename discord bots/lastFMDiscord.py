@@ -1,6 +1,6 @@
 #Retrieved some of my functions from here: https://github.com/huberf/lastfm-scrobbler/blob/master/lastpy/__init__.py
 #Just changed them up a little.
-import requests
+import httpx
 import time
 import hashlib
 import discord
@@ -85,7 +85,7 @@ async def fmScrobble(ctx,*args):
         return
     
     if ctx.author.id not in activeScrobblers:
-        token = requests.get(tokenURL).json()["token"]
+        token = httpx.get(tokenURL).json()["token"]
         await ctx.reply(embed=createEmbed("connect",token))
     else:
         if not activeScrobblers[ctx.author.id]: 
@@ -98,7 +98,9 @@ async def fmScrobble(ctx,*args):
             await ctx.reply("Revoking session.")
             return
         params = sessionSig(token)
-        response = requests.get("http://ws.audioscrobbler.com/2.0/",params)
+        async with httpx.AsyncClient() as client:
+            response = await client.get("http://ws.audioscrobbler.com/2.0/",params=params)
+
         if response.status_code == 200:
             sessionKey = response.json()["session"]["key"]
             activeScrobblers[ctx.author.id] = [sessionKey,False]
@@ -109,7 +111,7 @@ async def fmScrobble(ctx,*args):
         #     break
 
         params = createScrobbleSig(args[1],args[0],activeScrobblers[ctx.author.id][0])
-        response = requests.post("http://ws.audioscrobbler.com/2.0/",params).text
+        response = httpx.post("http://ws.audioscrobbler.com/2.0/",params=params).text
 
         if "Rate Limit Exceed" in response:
             await ctx.reply(embed=createEmbed("rateLimit"))
@@ -117,7 +119,6 @@ async def fmScrobble(ctx,*args):
         if increment == 0:
             await ctx.reply(embed=createEmbed("success",artist=args[0],track=args[1]))
         
-
         await asyncio.sleep(0.1)
         increment += 1
     
