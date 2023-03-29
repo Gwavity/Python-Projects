@@ -66,8 +66,6 @@ def createEmbed(instance,token=None,artist = None,track = None):
         embed = discord.Embed(title="We are currently being rate-limited.",description="Please wait a little while before using this bot again.",color=discord.Color.from_rgb(255,0,0))
     if instance == "finishedScroblbing":
         embed = discord.Embed(title="You are finished scrobbling.",description=f"Scrobbled track: {artist}-{track}",color=discord.Color.green())
-    if instance == "successfulStop":
-        embed = discord.Embed(title="You ended your scrobbling early.",color=discord.Color.green())
     if instance == "stoppingError":
         embed = discord.Embed(title="You aren't currently scrobbling a song.",description="No need to run this command again.",color=discord.Color.from_rgb(255,0,0))
 
@@ -89,9 +87,15 @@ async def fmScrobble(ctx,*args):
         token = requests.get(tokenURL).json()["token"]
         await ctx.reply(embed=createEmbed("connect",token))
     else:
-        await ctx.reply(embed=createEmbed("currentlyScrobbling"))
+        if not activeScrobblers[ctx.author.id]: 
+            await ctx.reply(embed=createEmbed("currentlyScrobbling"))#"You are already scrobbling.")
+            return
+    currentTime = time.time()
 
     while ctx.author.id not in activeScrobblers:
+        if time.time() - currentTime >= 10:#Exits the function if the user doesn't create their token in time.
+            await ctx.reply("Revoking session.")
+            return
         try:
             params = sessionSig(token)
             response = requests.get("http://ws.audioscrobbler.com/2.0/",params)
@@ -102,13 +106,15 @@ async def fmScrobble(ctx,*args):
         except:
             pass
     
+    activeScrobblers[ctx.author.id][1] = True
     while ctx.author.id in activeScrobblers:
         if increment >= 200:
             break
 
         params = createScrobbleSig(args[1],args[0],activeScrobblers[ctx.author.id][0])
         response = requests.post("http://ws.audioscrobbler.com/2.0/",params).text
-
+        if increment == 0:
+            await ctx.reply(embed=createEmbed("success",artist=args[0],track=args[1]))
         if "Rate Limit Exceed" in response:
             await ctx.reply(embed=createEmbed("rateLimit"))
             return
@@ -117,12 +123,12 @@ async def fmScrobble(ctx,*args):
         increment += 1
     
     await ctx.reply(embed=createEmbed("finishedScroblbing",None,args[0],args[1]))
+    activeScrobblers[ctx.author.id][1] = False
 
 @bot.command()
 async def fmStop(ctx):
-    if ctx.author.id in activeScrobblers:
-        del activeScrobblers[ctx.author.id]
-        await ctx.reply(embed=createEmbed("successfulStop"))
+   if ctx.author.id in activeScrobblers and activeScrobblers[ctx.author.id][1]:
+        activeScrobblers[ctx.author.id][1] = False
     else:
         await ctx.reply(embed=createEmbed("stoppingError"))
 
