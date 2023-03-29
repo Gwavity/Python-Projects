@@ -10,7 +10,7 @@ from discord.ext import commands
 APIKEY = ""#Pass your LastFM API Key in here.
 SECRETKEY = ""#Pass your LastFM SECRET Key in here.
 
-bot = commands.Bot(command_prefix="$", intents=discord.Intents.all(), case_insensitive=True)
+bot = commands.Bot(command_prefix="$",intents=discord.Intents.all(),case_insensitive=True)
 activeScrobblers = {}
 #"userID":["sessionKey",False/True]
 
@@ -48,7 +48,6 @@ def hashRequest(obj, secretKey):
     for i in sorted(items):
         string += i
         string += str(obj[i])
-        
     string += secretKey
     stringToHash = string.encode('utf8')
     requestHash = hashlib.md5(stringToHash).hexdigest()
@@ -101,25 +100,26 @@ async def fmScrobble(ctx,*args):
         try:
             params = sessionSig(token)
             response = requests.get("http://ws.audioscrobbler.com/2.0/",params)
-            
             if response.status_code == 200:
                 sessionKey = response.json()["session"]["key"]
-                activeScrobblers[ctx.author.id] = [sessionKey]
+                activeScrobblers[ctx.author.id] = [sessionKey,False]
         except:
             pass
     
     activeScrobblers[ctx.author.id][1] = True
-    while ctx.author.id in activeScrobblers:
-#         if increment >= 200:
-#             break
+    while activeScrobblers[ctx.author.id][1]:
+        # if increment >= 200:
+        #     break
 
         params = createScrobbleSig(args[1],args[0],activeScrobblers[ctx.author.id][0])
         response = requests.post("http://ws.audioscrobbler.com/2.0/",params).text
-        if increment == 0:
-            await ctx.reply(embed=createEmbed("success",artist=args[0],track=args[1]))
+
         if "Rate Limit Exceed" in response:
             await ctx.reply(embed=createEmbed("rateLimit"))
             return
+        if increment == 0:
+            await ctx.reply(embed=createEmbed("success",artist=args[0],track=args[1]))
+        
 
         await asyncio.sleep(0.1)
         increment += 1
@@ -129,7 +129,7 @@ async def fmScrobble(ctx,*args):
 
 @bot.command()
 async def fmStop(ctx):
-   if ctx.author.id in activeScrobblers and activeScrobblers[ctx.author.id][1]:
+    if ctx.author.id in activeScrobblers and activeScrobblers[ctx.author.id][1]:
         activeScrobblers[ctx.author.id][1] = False
     else:
         await ctx.reply(embed=createEmbed("stoppingError"))
