@@ -48,8 +48,7 @@ class cardDeck:
         return
     
     def removeCard(self,card):
-        self.deck.remove(card)
-        
+        self.deck.remove(card)  
         return
 
     def printDeck(self,deck):
