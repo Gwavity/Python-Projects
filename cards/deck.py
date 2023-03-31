@@ -50,37 +50,9 @@ class cardDeck:
         return
 
     def printDeck(self,deck):
-        # for _ in self.deck:
-        #     print(_.toString())
+
         return [card.toString() for card in deck]
     
     def printBackwards(self,deck):
-        # for _ in reversed(self.deck):
-        #     print(_.toString())
+
         return [card.toString() for card in reversed(deck)]
-
-
-
-
-
-
-
-
-
-
-# wowza = cardDeck()
-
-# wowza.createDeck()
-
-# wowza.printBackwards()
-# wowza.printDeck()
-
-# for i in wowza.deck:
-#     print(i.toString())
-#     try:
-#         print(int(i.rank))
-#     except:
-#         continue
-#     print(i.suit,i.rank)
-# print(int("one"))
-# print(wowza.deck)
