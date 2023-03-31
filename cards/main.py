@@ -15,7 +15,7 @@ if __name__ == "__main__":
         except Exception as e:
             if type(e) == ValueError:
                 print("Please enter a number.\n")
-    
+
     for i in range(playerCount):
         player.Player(input("Enter your name: "))
 
@@ -24,30 +24,31 @@ if __name__ == "__main__":
     currentPlayerIter = 0
     
     deck.shuffle()
-    
+
     for cards in deck.deck:
-        curerntPlayer = list(player.players[currentPlayerIter].keys())[0]
+        curerntPlayer = player.players[currentPlayerIter]
+
         curerntPlayer.giveCard(cards)
         currentPlayerIter += 1
-        
         if currentPlayerIter >= len(list(player.players)):
             currentPlayerIter = 0
     
     for _ in player.players:
-        for k,v in _.items():
-            print(f"{k.name}: {', '.join(deck.printDeck(v))}")
+        print(f"{_.name}: {', '.join(deck.printDeck(_.cards))}")
     
     print("")
     deck.clear()
 
+    currentPlayerIter = 0
+
     for cards in deck.deck:
-        curerntPlayer = list(player.players[currentPlayerIter].keys())[0]
+        curerntPlayer = player.players[currentPlayerIter]
+        print(curerntPlayer.name, print(cards.toString()))
+
         curerntPlayer.giveCard(cards)
         currentPlayerIter += 1
-        
         if currentPlayerIter >= len(list(player.players)):
             currentPlayerIter = 0
     
     for _ in player.players:
-        for k,v in _.items():
-            print(f"{k.name}: {', '.join(deck.printDeck(v))}")
+        print(f"{_.name}: {', '.join(deck.printDeck(_.cards))}")
